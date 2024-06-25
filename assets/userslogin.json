@@ -1,0 +1,15 @@
+{
+    "users": [
+      {
+        "login": "torvalds",
+        "password": "password1", 
+        "avatar_url": "https://avatars.githubusercontent.com/u/1024025?v=4"
+      },
+      {
+        "login": "timbl",
+        "password": "password2",
+        "avatar_url": "https://avatars.githubusercontent.com/u/1254848?v=4"
+      }
+    ]
+  }
+  
