@@ -16,7 +16,7 @@ export async function saveUserDataToDb(user: any) {
       throw new Error('Failed to save user data');
     }
 
-    const data = await response.json(); // Assuming the server returns the saved user data
+    const data = await response.json(); 
     console.log('User saved successfully:', data);
     Alert.alert("Registration Successful", `Welcome ${user.name}!`);
   } catch (error) {

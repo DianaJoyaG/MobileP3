@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
 import { StyleSheet, Image, TextInput, Button, View, Alert } from 'react-native';
+import * as Location from 'expo-location';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { useAuth } from '@/hooks/authContext'; // Import the useAuth hook
-import { checkGitHubUser } from '@/API/GitHubApi'; // Assuming this is the correct path
+import { checkGitHubUser } from '@/API/GitHubApi'; 
 import { saveUserDataToDb } from '@/API/services/userDataService';
 
 export default function TabTwoScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [city, setCity] = useState('');
-  const [country, setCountry] = useState('');
   const { login } = useAuth();  // Destructure the login function from useAuth
 
   const handleSignIn = async () => {
     try {
+      // Request permissions and get location
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Denied', 'Permission to access location was denied');
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+
       const userData = await checkGitHubUser(username); // Check if GitHub user exists
       if (userData) {
         const user = {
@@ -23,15 +31,14 @@ export default function TabTwoScreen() {
           bio: userData.bio,
           company: userData.company,
           name: userData.name,
-          city: city,
-          country: country
+          coordinates: { latitude, longitude }
         };
   
         // Save to local JSON server
         await saveUserDataToDb(user);
   
         // Simulate registration and login
-        login(user); // Adjust login to handle complete user data
+        login(user); 
         Alert.alert("Login Successful", `Welcome ${userData.name}!`);
       } else {
         Alert.alert("Login Failed", "GitHub username does not exist.");
@@ -41,7 +48,6 @@ export default function TabTwoScreen() {
       Alert.alert("Login Error", "An error occurred during login.");
     }
   };
-  
 
   return (
     <ParallaxScrollView
@@ -64,20 +70,6 @@ export default function TabTwoScreen() {
           value={password}
           placeholder="Password (GitHub or App specific)"
           secureTextEntry
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setCity}
-          value={city}
-          placeholder="City"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setCountry}
-          value={country}
-          placeholder="Country"
           autoCapitalize="none"
         />
         <Button

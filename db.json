@@ -1,14 +1,16 @@
 {
   "users": [
     {
-      "id": "330a",
+      "id": "0080",
       "login": "DianaJoyaG",
       "avatar_url": "https://avatars.githubusercontent.com/u/157942858?v=4",
-      "bio": null,
-      "company": null,
-      "name": null,
-      "city": "calgary",
-      "country": "canada"
+      "bio": "Software Development student with strong foundations in a wide range of technical skills, including HTML, CSS, JavaScript, Node.js, C#, React native, ASP.Net",
+      "company": "Bird Construction",
+      "name": "Diana Joya",
+      "coordinates": {
+        "latitude": 37.4220936,
+        "longitude": -122.083922
+      }
     }
   ]
 }
